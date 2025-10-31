@@ -1,13 +1,13 @@
 package com.example.blogapi;
 
 import java.time.LocalDateTime;
-// import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-// import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Post {
@@ -27,8 +27,8 @@ public class Post {
     
     private String text;
 
-    // @OneToMany(mappedBy = "post")
-    // private List<Integer> comments;
+    @OneToMany(mappedBy = "post")
+    private Set<Comment> comments;
     
     public Integer getPostID() {
         return postID;

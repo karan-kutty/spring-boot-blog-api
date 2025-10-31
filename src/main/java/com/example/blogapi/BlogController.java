@@ -49,7 +49,7 @@ public class BlogController {
     public String addComment(@RequestParam String postID, @RequestParam String author, 
     @RequestParam String text) {
         Comment c = new Comment();
-        // c.setPostID(Integer.parseInt(postID));
+        c.setPost(this.postRepository.findById(Integer.parseInt(postID)).get());
         c.setAuthor(author);
         c.setText(text);
         

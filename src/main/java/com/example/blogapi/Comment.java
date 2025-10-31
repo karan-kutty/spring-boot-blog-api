@@ -4,8 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Comment {
@@ -13,9 +13,9 @@ public class Comment {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer commentID;
 
-    // @ManyToOne
-    // @JoinColumn(name = "postID", nullable = false)
-    // private Integer postID;
+    @ManyToOne
+    @JoinColumn(name = "postID", nullable = false)
+    private Post post;
 
     private String author;
     
@@ -23,13 +23,13 @@ public class Comment {
     
     private Integer parentCommentID;
     
-    // public Integer getPostID() {
-    //     return postID;
-    // }
+    public Post getPost() {
+        return post;
+    }
 
-    // public void setPostID(Integer postID) {
-    //     this.postID = postID;
-    // }
+    public void setPost(Post post) {
+        this.post = post;
+    }
 
     public String getAuthor() {
         return author;

@@ -1,14 +1,11 @@
 package com.example.blogapi;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequestMapping("/blog")
@@ -20,20 +17,42 @@ public class BlogController {
     private CommentRepository commentRepository;
 
 	@GetMapping("/all")
-	public String allPosts() {
-        List<Post> posts = (List<Post>)postRepository.findAll();
-        String result = "<h1>All posts:</h1><br><ul>";
-
-        for (int i = 0; i < posts.size(); i++) {
-            Post p = posts.get(i);
-            result = result + "<li>" + p.getTitle() + "</li>";
-        };
-
-        result = result + "</li>";
-
-        return result;
+	public Iterable<Post> allPosts() {
+        Iterable<Post> posts = postRepository.findAll();
+        posts.forEach(post -> {
+            // Clears out all comments before sending the JSON result to prevent circular dependencies.
+            post.setComments(null);
+        });
+        return posts;
 	}
 
+    @GetMapping("/post")
+    public Post getPost(@RequestParam String postID) {
+        Integer id = Parser.tryParseStringToInteger(postID);
+        
+        if (id == null)
+            return null;
+        else return this.postRepository.findById(id).get();
+    }
+
+    @GetMapping("/comments")
+    public Iterable<Comment> getComments(@RequestParam String postID) {
+        Integer id = Parser.tryParseStringToInteger(postID);
+        
+        if (id == null)
+            return null;
+        else {
+            Iterable<Comment> comments = this.getPost(postID).getComments();
+
+            comments.forEach(comment -> {
+                // Clears out all posts before sending the JSON result to prevent circular dependencies.
+                comment.setPost(null);
+            });
+
+            return comments;
+        }
+    }
+    
     @PostMapping("/addPost")
     public String addPost(@RequestParam String title, @RequestParam String author) {
         Post p = new Post();
@@ -56,6 +75,5 @@ public class BlogController {
         commentRepository.save(c);
 
         return "Added new comment!";
-    }
-    
+    }    
 }

@@ -30,6 +30,14 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private Set<Comment> comments;
     
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> coments) {
+        this.comments = coments;
+    }
+
     public Integer getPostID() {
         return postID;
     }

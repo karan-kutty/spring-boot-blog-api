@@ -18,12 +18,7 @@ public class BlogController {
 
 	@GetMapping("/all")
 	public Iterable<Post> allPosts() {
-        Iterable<Post> posts = postRepository.findAll();
-        posts.forEach(post -> {
-            // Clears out all comments before sending the JSON result to prevent circular dependencies.
-            post.setComments(null);
-        });
-        return posts;
+        return postRepository.findAll();
 	}
 
     @GetMapping("/post")
@@ -42,14 +37,7 @@ public class BlogController {
         if (id == null)
             return null;
         else {
-            Iterable<Comment> comments = this.getPost(postID).getComments();
-
-            comments.forEach(comment -> {
-                // Clears out all posts before sending the JSON result to prevent circular dependencies.
-                comment.setPost(null);
-            });
-
-            return comments;
+            return this.getPost(postID).getComments();
         }
     }
     

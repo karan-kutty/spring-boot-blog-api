@@ -1,5 +1,7 @@
 package com.example.blogapi;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "postID", nullable = false)
+    @JsonBackReference
     private Post post;
 
     private String author;

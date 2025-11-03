@@ -3,6 +3,8 @@ package com.example.blogapi;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +30,7 @@ public class Post {
     private String text;
 
     @OneToMany(mappedBy = "post")
+    @JsonManagedReference
     private Set<Comment> comments;
     
     public Set<Comment> getComments() {
